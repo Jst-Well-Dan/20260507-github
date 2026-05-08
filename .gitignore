@@ -1,0 +1,6 @@
+.env
+.agents/
+.edgeone/
+node_modules/
+*.log
+.DS_Store

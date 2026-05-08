@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub 零基础学习手册：从找项目到部署上线</title>
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #617083;
+      --line: #d9e0e8;
+      --paper: #ffffff;
+      --soft: #f5f7fa;
+      --blue: #2563eb;
+      --green: #16835f;
+      --yellow: #b7791f;
+      --red: #c2413a;
+      --shadow: 0 18px 48px rgba(20, 35, 55, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      line-height: 1.72;
+      background: #eef2f6;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 292px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #fbfcfe;
+    }
+
+    .brand {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .brand-badge {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #17202a, #2563eb);
+      box-shadow: var(--shadow);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    nav {
+      display: grid;
+      gap: 4px;
+    }
+
+    nav a {
+      display: block;
+      padding: 9px 10px;
+      border-radius: 8px;
+      color: #344255;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    nav a:hover {
+      color: var(--blue);
+      text-decoration: none;
+      background: #eef4ff;
+    }
+
+    .meta {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    main {
+      padding: 36px;
+    }
+
+    .hero {
+      min-height: 520px;
+      display: grid;
+      align-items: center;
+      padding: 56px;
+      color: #fff;
+      border-radius: 0;
+      background:
+        linear-gradient(90deg, rgba(10, 18, 30, 0.92), rgba(10, 18, 30, 0.62)),
+        url("https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1800&q=80") center/cover;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-inner {
+      max-width: 860px;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: #b9d1ff;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 68px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 720px;
+      margin: 22px 0 0;
+      color: #e5eefc;
+      font-size: 20px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button.primary {
+      color: #102033;
+      background: #ffffff;
+    }
+
+    .button.secondary {
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.48);
+    }
+
+    .course-shell {
+      max-width: 1180px;
+      margin: 28px auto 0;
+    }
+
+    .band {
+      margin-top: 28px;
+      padding: 32px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .band h2,
+    .module h2 {
+      margin: 0 0 12px;
+      font-size: 30px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .band > p,
+    .module > p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .repo-card {
+      min-height: 250px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .repo-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 17px;
+    }
+
+    .repo-card p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .tag {
+      padding: 4px 9px;
+      border-radius: 999px;
+      color: #344255;
+      font-size: 12px;
+      font-weight: 700;
+      background: #edf2f7;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .module {
+      padding: 32px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .lesson {
+      margin-top: 22px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .lesson h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 10px;
+      font-size: 24px;
+      line-height: 1.3;
+      letter-spacing: 0;
+    }
+
+    .num {
+      width: 34px;
+      height: 34px;
+      display: inline-grid;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      background: var(--blue);
+    }
+
+    .lesson-intro {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .panel {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfe;
+    }
+
+    .panel h4 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    .panel p,
+    .panel li {
+      color: #344255;
+      font-size: 15px;
+    }
+
+    .panel p {
+      margin: 0 0 10px;
+    }
+
+    ul,
+    ol {
+      padding-left: 22px;
+      margin: 10px 0 0;
+    }
+
+    li + li {
+      margin-top: 6px;
+    }
+
+    .script {
+      border-left: 4px solid var(--blue);
+      background: #f4f8ff;
+    }
+
+    .practice {
+      border-left: 4px solid var(--green);
+      background: #f2fbf7;
+    }
+
+    .warning {
+      border-left: 4px solid var(--yellow);
+      background: #fffaf0;
+    }
+
+    .error {
+      border-left: 4px solid var(--red);
+      background: #fff6f5;
+    }
+
+    code,
+    pre {
+      font-family: "Cascadia Code", Consolas, monospace;
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: #edf2f7;
+      color: #132238;
+      font-size: 0.94em;
+    }
+
+    pre {
+      overflow: auto;
+      margin: 12px 0 0;
+      padding: 16px;
+      border-radius: 8px;
+      color: #edf6ff;
+      background: #101826;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    pre code {
+      padding: 0;
+      color: inherit;
+      background: transparent;
+      font-size: inherit;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 15px;
+    }
+
+    th {
+      color: #243247;
+      background: #f2f5f8;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .workflow.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .flow-step {
+      position: relative;
+      min-height: 122px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .flow-step b {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--blue);
+    }
+
+    .flow-step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .check {
+      min-height: 76px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .check span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .demo-page {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .demo-top {
+      display: flex;
+      gap: 7px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #f2f5f8;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #cbd5e1;
+    }
+
+    .demo-content {
+      padding: 20px;
+    }
+
+    .resource-preview {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .mini-card {
+      min-height: 126px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfe;
+    }
+
+    .mini-card b {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .mini-card span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer {
+      margin-top: 28px;
+      padding: 28px 32px;
+      color: #dfe8f5;
+      background: #121a26;
+    }
+
+    .footer h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+    }
+
+    .footer p {
+      margin: 0;
+      color: #aebbd0;
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        display: block;
+      }
+
+      aside {
+        position: static;
+        height: auto;
+        padding: 20px;
+      }
+
+      nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      .hero {
+        min-height: 480px;
+        padding: 34px;
+      }
+
+      .grid-3,
+      .two-col,
+      .workflow,
+      .resource-preview,
+      .checklist {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      nav {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        padding: 14px;
+      }
+
+      .hero,
+      .band,
+      .module,
+      .footer {
+        padding: 22px;
+      }
+
+      .hero h2 {
+        font-size: 34px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      .lesson h3 {
+        align-items: flex-start;
+        font-size: 21px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .layout {
+        display: block;
+      }
+
+      aside {
+        display: none;
+      }
+
+      main {
+        padding: 0;
+      }
+
+      .hero,
+      .band,
+      .module,
+      .footer {
+        box-shadow: none;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <div class="brand">
+        <div class="brand-badge">GH</div>
+        <h1>GitHub 零基础学习手册</h1>
+        <p>跟着步骤完成：找项目、读项目、下载项目、上传网页并部署上线。</p>
+      </div>
+      <nav aria-label="课程导航">
+        <a href="#overview">课程总览</a>
+        <a href="#repos">贯穿案例</a>
+        <a href="#module-1">模块一：寻找与获取项目</a>
+            <a href="#lesson-1">1. 认识 GitHub</a>
+        <a href="#lesson-2">2. 搜索好项目</a>
+        <a href="#lesson-3">3. 读懂项目主页</a>
+        <a href="#lesson-4">4. 下载到本地</a>
+        <a href="#module-2">模块二：上传与部署项目</a>
+        <a href="#lesson-5">5. Git 是什么</a>
+        <a href="#lesson-6">6. 创建第一个仓库</a>
+        <a href="#lesson-7">7. add / commit / push</a>
+        <a href="#lesson-8">8. EdgeOne Pages 一键部署</a>
+      </nav>
+      <div class="meta">
+        <p><strong>适合对象：</strong>编程零基础学习者</p>
+        <p><strong>学习目标：</strong>完成一个可访问的个人 GitHub 资源网页。</p>
+      </div>
+    </aside>
+
+    <main>
+      <section class="hero" id="overview">
+        <div class="hero-inner">
+          <p class="eyebrow">零基础学习版</p>
+          <h2>用 GitHub 找到 3 个 AI 编程资源，并把它们整理成网站上线</h2>
+          <p>这门课不要求你先会编程。你会从认识 GitHub 页面开始，学会看懂项目、下载项目、创建自己的网页项目、上传到 GitHub，并通过 EdgeOne Pages 部署成可分享的网站。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#module-1">开始学习</a>
+            <a class="button secondary" href="#module-2">上传与部署</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="course-shell">
+        <section class="band" id="repos">
+          <h2>后续资源整理的 3 个 GitHub 案例</h2>
+          <p>这三个仓库会贯穿后续资源整理任务。你不需要理解仓库里的所有技术细节，只需要学会从 GitHub 上找到有价值的信息，并把它们整理成自己的网页。</p>
+          <div class="grid-3">
+            <article class="repo-card">
+              <strong>anthropics/skills</strong>
+              <p>公开的 Agent Skills 仓库，适合用来讲“GitHub 可以存放代码、文档、规范和模板”。</p>
+              <a href="https://github.com/anthropics/skills/tree/main" target="_blank" rel="noreferrer">打开仓库</a>
+              <div class="tag-row">
+                <span class="tag">认识页面</span>
+                <span class="tag">文件夹结构</span>
+                <span class="tag">AI 资源</span>
+              </div>
+            </article>
+            <article class="repo-card">
+              <strong>VoltAgent/awesome-design-md</strong>
+              <p>设计系统文档集合，适合讲“awesome 项目”和“如何通过 README 判断一个项目是否值得收藏”。</p>
+              <a href="https://github.com/VoltAgent/awesome-design-md" target="_blank" rel="noreferrer">打开仓库</a>
+              <div class="tag-row">
+                <span class="tag">搜索案例</span>
+                <span class="tag">README</span>
+                <span class="tag">资源集合</span>
+              </div>
+            </article>
+            <article class="repo-card">
+              <strong>vercel-labs/agent-skills</strong>
+              <p>Vercel Labs 的 Agent Skills 目录，适合讲“仓库、文件夹、文件”的层级关系。</p>
+              <a href="https://github.com/vercel-labs/agent-skills/tree/main/skills" target="_blank" rel="noreferrer">打开目录</a>
+              <div class="tag-row">
+                <span class="tag">子目录</span>
+                <span class="tag">下载理解</span>
+                <span class="tag">复用资料</span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="band">
+          <h2>课前准备</h2>
+          <p>开始前先准备好下面 2 样东西。如果你暂时没有安装 Git，也可以先完成 GitHub 页面阅读和 ZIP 下载部分。</p>
+          <div class="workflow two">
+            <div class="flow-step">
+              <b>GitHub 账号</b>
+              <p>用于收藏项目、创建仓库，并把自己的网页项目上传到云端。</p>
+            </div>
+            <div class="flow-step">
+              <b>Git 工具</b>
+              <p>用于在电脑终端里执行 clone、add、commit、push 等命令。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="band">
+          <h2>课程主线</h2>
+          <p>你会按这条路径完成一次完整实操。</p>
+          <div class="workflow">
+            <div class="flow-step">
+              <b>1. 找到资源</b>
+              <p>从 GitHub 上找到值得学习和收藏的 AI 编程相关项目。</p>
+            </div>
+            <div class="flow-step">
+              <b>2. 整理网页</b>
+              <p>把 3 个仓库整理成自己的资源页，形成一个小项目。</p>
+            </div>
+            <div class="flow-step">
+              <b>3. 部署上线</b>
+              <p>把网页上传到 GitHub，再通过 EdgeOne Pages 发布成公网链接。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="module" id="module-1">
+          <h2>模块一：寻找 & 获取项目</h2>
+          <p>模块目标：知道 GitHub 是什么，能搜索项目、判断项目、读懂项目主页，并把项目下载到本地。</p>
+
+          <article class="lesson" id="lesson-1">
+            <h3><span class="num">1</span>第一节：认识 GitHub</h3>
+            <p class="lesson-intro">本节不讲复杂命令，只建立直觉。你先理解 GitHub 是一个公开项目平台，而不是普通网盘。</p>
+            <div class="two-col">
+              <div class="panel script">
+                <h4>你需要先理解</h4>
+                <p>可以这样理解 GitHub：</p>
+                <p>“GitHub 就像一个公开的代码图书馆。全世界的开发者会把项目放在这里，有些项目是完整软件，有些是网页模板，有些是文档、规范、案例库。我们今天不会一上来写复杂代码，而是先学会怎么看懂这个图书馆。”</p>
+                <p>然后解释两个概念：</p>
+                <ul>
+                  <li><strong>Git：</strong>记录文件修改历史的工具，类似更强大的版本记录。</li>
+                  <li><strong>GitHub：</strong>放 Git 项目的云端网站，也方便展示、分享和协作。</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h4>操作案例：openclaw/openclaw</h4>
+                <ol>
+                  <li>打开 <a href="https://github.com/openclaw/openclaw/tree/main" target="_blank" rel="noreferrer">openclaw/openclaw</a>。</li>
+                  <li>找到页面顶部的作者名、仓库名和分支。</li>
+                  <li>找到绿色的 <code>Code</code> 按钮。</li>
+                  <li>观察页面里的文件夹、文件和 README，理解一个 GitHub 仓库通常由很多部分组成。</li>
+                </ol>
+              </div>
+            </div>
+            <div class="checklist">
+              <div class="check"><strong>本节重点</strong><span>GitHub 是项目主页，不只是下载页面。</span></div>
+              <div class="check"><strong>暂时不用掌握</strong><span>分支、PR、Actions 等概念后面再了解。</span></div>
+            </div>
+          </article>
+
+          <article class="lesson" id="lesson-2">
+            <h3><span class="num">2</span>第二节：搜索好项目</h3>
+            <p class="lesson-intro">本节训练“怎么找”。重点不是写代码，而是学会用关键词和项目指标做判断。</p>
+            <div class="two-col">
+              <div class="panel script">
+                <h4>判断方法</h4>
+                <p>“在 GitHub 上搜索项目，不能只看标题。我们要看它有多少人收藏、最近是否更新、README 是否清楚、有没有 License。零基础阶段，先学会判断一个项目值不值得打开。”</p>
+                <p>可以解释这些指标：</p>
+                <ul>
+                  <li><strong>Stars：</strong>类似收藏数，通常能反映受欢迎程度。</li>
+                  <li><strong>Topics：</strong>项目标签，帮助我们按主题找资源。</li>
+                  <li><strong>Last commit：</strong>最近更新时间，用来判断是否还在维护。</li>
+                  <li><strong>README：</strong>项目说明书，下载前先读这里。</li>
+                </ul>
+              </div>
+              <div class="panel practice">
+                <h4>操作任务</h4>
+                <p>本节使用两个搜索目标：</p>
+                <ul>
+                  <li><a href="https://github.com/VoltAgent/awesome-design-md" target="_blank" rel="noreferrer">VoltAgent/awesome-design-md</a>：练习搜索集合型资源。</li>
+                  <li><a href="https://github.com/anthropics/skills/tree/main" target="_blank" rel="noreferrer">anthropics/skills</a>：练习搜索具体 AI Skills 仓库。</li>
+                </ul>
+                <p>在 GitHub 搜索框里依次尝试下面的关键词：</p>
+                <pre><code>awesome design md
+DESIGN.md
+agent skills
+github skills
+anthropic skills
+language:markdown stars:&gt;100</code></pre>
+                <p>观察搜索结果里的仓库简介、Star 数、更新时间和 README 完整度。找到 <code>anthropics/skills</code> 后，重点看它是否是官方组织发布、README 是否清楚、目录是否有规律。</p>
+              </div>
+            </div>
+            <div class="panel warning">
+              <h4>常见误区</h4>
+              <p>Star 多不等于一定适合自己。零基础阶段要优先选择 README 清楚、结构简单、目标明确的项目。</p>
+            </div>
+          </article>
+
+          <article class="lesson" id="lesson-3">
+            <h3><span class="num">3</span>第三节：读懂项目主页</h3>
+            <p class="lesson-intro">本节训练信息提取能力，让你知道下载前先看什么。</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>页面区域</th>
+                  <th>是什么意思</th>
+                  <th>你应该怎么看</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>README</td>
+                  <td>项目说明书</td>
+                  <td>先读这里，判断项目用途、安装方式、使用限制。</td>
+                </tr>
+                <tr>
+                  <td>Stars / Forks</td>
+                  <td>收藏数和复制分支数</td>
+                  <td>辅助判断受欢迎程度，不作为唯一标准。</td>
+                </tr>
+                <tr>
+                  <td>Issues</td>
+                  <td>问题反馈区</td>
+                  <td>看看别人是否遇到很多无法解决的问题。</td>
+                </tr>
+                <tr>
+                  <td>License</td>
+                  <td>使用授权</td>
+                  <td>判断能不能复制、修改、商用或公开发布。</td>
+                </tr>
+                <tr>
+                  <td>Last commit</td>
+                  <td>最近更新时间</td>
+                  <td>太久没更新的项目要谨慎使用。</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="two-col">
+              <div class="panel practice">
+                <h4>案例任务</h4>
+                <p>打开 <a href="https://github.com/VoltAgent/awesome-design-md" target="_blank" rel="noreferrer">awesome-design-md</a>，回答：</p>
+                <ol>
+                  <li>这个项目是做什么的？</li>
+                  <li>它更像代码项目，还是资源集合？</li>
+                  <li>应该先看 README 还是直接下载？</li>
+                  <li>如果要复用其中一个 DESIGN.md，是否必须下载整个仓库？</li>
+                </ol>
+              </div>
+              <div class="panel">
+                <h4>补充案例</h4>
+                <p>再打开 <a href="https://github.com/anthropics/skills/tree/main" target="_blank" rel="noreferrer">anthropics/skills</a>，观察文件夹结构。重点理解：仓库里可以有很多子目录，每个子目录可能代表一种资源或功能。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="lesson" id="lesson-4">
+            <h3><span class="num">4</span>第四节：把项目下载到本地</h3>
+            <p class="lesson-intro">本节理解 ZIP 下载和 git clone 的区别，同时理解仓库、文件夹、文件的层级关系。</p>
+            <div class="two-col">
+              <div class="panel script">
+                <h4>两种下载方式</h4>
+                <p>“GitHub 上的绿色 Code 按钮提供两种常见获取方式。Download ZIP 像是把整本书复印一份带走，简单但后续和原项目断开。git clone 像是把书带回家并保留和图书馆的连接，以后可以同步新版。”</p>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>方式</th>
+                      <th>适合情况</th>
+                      <th>注意事项</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Download ZIP</td>
+                      <td>只想看看、复制某些文件</td>
+                      <td>后续更新要重新下载。</td>
+                    </tr>
+                    <tr>
+                      <td>git clone</td>
+                      <td>长期学习、修改、跟进项目</td>
+                      <td>需要本地安装 Git。</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="panel practice">
+                <h4>课堂案例：vercel-labs/agent-skills</h4>
+                <p>打开 <a href="https://github.com/vercel-labs/agent-skills/tree/main/skills" target="_blank" rel="noreferrer">vercel-labs/agent-skills/tree/main/skills</a>。</p>
+                <p>你需要分清：</p>
+                <ul>
+                  <li><code>vercel-labs/agent-skills</code> 是仓库。</li>
+                  <li><code>skills</code> 是仓库里的一个文件夹。</li>
+                  <li>点击 Download ZIP 通常下载的是整个仓库，不只是当前文件夹。</li>
+                </ul>
+                <pre><code>git clone https://github.com/vercel-labs/agent-skills.git</code></pre>
+              </div>
+            </div>
+            <div class="panel error">
+              <h4>常见错误</h4>
+              <p>初学者经常以为“我现在看的是 skills 文件夹，所以下载时只会下载 skills 文件夹”。实际使用时要注意：GitHub 的下载通常以仓库为单位。</p>
+            </div>
+          </article>
+        </section>
+
+        <section class="module" id="module-2">
+          <h2>模块二：上传 & 部署项目</h2>
+          <p>模块目标：创建自己的网页项目，把它上传到 GitHub，并通过 EdgeOne Pages 部署成可访问的网站。</p>
+
+          <article class="lesson" id="lesson-5">
+            <h3><span class="num">5</span>第五节：Git 是什么</h3>
+            <p class="lesson-intro">本节用“游戏存档”理解 Git，不陷入术语。</p>
+            <div class="two-col">
+              <div class="panel script">
+                <h4>Git 的直觉</h4>
+                <p>“打游戏时，在重要关卡前你会存档。Git 做的事很像：每次我们改完一批文件，就手动保存一个版本。以后如果改错了，可以回到之前的版本。”</p>
+                <p>这节开始创建课堂项目：<code>my-agent-resource-page</code>。它是一个资源收藏网页，展示今天学过的 3 个 GitHub 仓库。</p>
+              </div>
+              <div class="panel">
+                <h4>命令类比</h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Git 命令</th>
+                      <th>类比</th>
+                      <th>实际作用</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>git add</code></td>
+                      <td>把要保存的东西放进存档袋</td>
+                      <td>选择本次要记录的文件。</td>
+                    </tr>
+                    <tr>
+                      <td><code>git commit</code></td>
+                      <td>按下存档键并写备注</td>
+                      <td>正式保存一个版本。</td>
+                    </tr>
+                    <tr>
+                      <td><code>git push</code></td>
+                      <td>把存档上传到云端</td>
+                      <td>同步到 GitHub。</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+
+          <article class="lesson" id="lesson-6">
+            <h3><span class="num">6</span>第六节：创建第一个仓库</h3>
+            <p class="lesson-intro">本节创建属于你自己的 GitHub 仓库，为上传和部署做准备。</p>
+            <div class="two-col">
+              <div class="panel practice">
+                <h4>项目结构</h4>
+                <p>在本地创建文件夹：</p>
+                <pre><code>my-agent-resource-page/
+├── index.html
+├── style.css
+└── script.js</code></pre>
+                <p>页面主题：我收藏的 3 个 GitHub AI 资源。</p>
+              </div>
+              <div class="panel script">
+                <h4>GitHub 创建仓库步骤</h4>
+                <ol>
+                  <li>登录 GitHub。</li>
+                  <li>点击右上角 <code>+</code>，选择 <code>New repository</code>。</li>
+                  <li>仓库名填写 <code>my-agent-resource-page</code>。</li>
+                  <li>选择 <code>Public</code>，方便后续 EdgeOne Pages 部署。</li>
+                  <li>先不要勾选自动创建 README，避免和本地项目冲突。</li>
+                </ol>
+              </div>
+            </div>
+            <div class="panel warning">
+              <h4>命名建议</h4>
+              <p>仓库名建议使用英文小写、数字和短横线，例如 <code>my-first-site</code>。不要使用中文、空格或特殊符号。</p>
+            </div>
+          </article>
+
+          <article class="lesson" id="lesson-7">
+            <h3><span class="num">7</span>第七节：三步走 add / commit / push</h3>
+            <p class="lesson-intro">本节把本地项目上传到 GitHub，并通过一次修改练习巩固流程。</p>
+            <div class="two-col">
+              <div class="panel script">
+                <h4>首次上传命令</h4>
+                <pre><code>cd my-agent-resource-page
+
+git init
+git branch -M main
+git remote add origin https://github.com/你的用户名/my-agent-resource-page.git
+
+git add .
+git commit -m "add my GitHub resource page"
+git push -u origin main</code></pre>
+              </div>
+              <div class="panel practice">
+                <h4>课堂练习</h4>
+                <ol>
+                  <li>打开 <code>index.html</code>。</li>
+                  <li>把页面标题改成“我的 GitHub AI 资源收藏”。</li>
+                  <li>重新执行 <code>git add .</code>。</li>
+                  <li>执行 <code>git commit -m "update page title"</code>。</li>
+                  <li>执行 <code>git push</code>。</li>
+                  <li>刷新 GitHub 仓库页面，观察文件是否更新。</li>
+                </ol>
+              </div>
+            </div>
+            <div class="panel error">
+              <h4>常见错误排查</h4>
+              <ul>
+                <li><strong>提示不是 Git 仓库：</strong>确认是否进入了正确文件夹。</li>
+                <li><strong>push 失败：</strong>检查远程仓库地址是否写错。</li>
+                <li><strong>GitHub 没变化：</strong>确认是否执行了 commit 和 push。</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="lesson" id="lesson-8">
+            <h3><span class="num">8</span>第八节：EdgeOne Pages 一键部署</h3>
+            <p class="lesson-intro">本节把 GitHub 仓库部署成公网网站，让你获得一个可以分享的成果链接。</p>
+            <div class="two-col">
+              <div class="panel script">
+                <h4>部署理解</h4>
+                <p>“GitHub 负责保存项目，EdgeOne Pages 负责把网页发布到互联网上。它们连接以后，每次我们 push 到 GitHub，EdgeOne Pages 都会自动重新部署。”</p>
+                <ol>
+                  <li>打开 <a href="https://pages.edgeone.ai/" target="_blank" rel="noreferrer">EdgeOne Pages</a> 并登录。</li>
+                  <li>选择通过 AI 对话或 Skill 的方式部署项目。</li>
+                  <li>参考官方文档：<a href="https://pages.edgeone.ai/zh/document/ai-dialogue-deployment-deploy-project-with-one-sentence-using-skill" target="_blank" rel="noreferrer">使用 Skill 一句话部署项目</a>。</li>
+                  <li>连接 GitHub，选择 <code>my-agent-resource-page</code>。</li>
+                  <li>确认配置后开始部署，等待生成公网访问链接。</li>
+                </ol>
+              </div>
+              <div class="panel practice">
+                <h4>部署后验证</h4>
+                <ol>
+                  <li>打开 EdgeOne Pages 生成的网址。</li>
+                  <li>确认页面能看到 3 个 GitHub 资源卡片。</li>
+                  <li>回到本地修改一个介绍文案。</li>
+                  <li>执行 <code>git add .</code>、<code>git commit</code>、<code>git push</code>。</li>
+                  <li>等待 EdgeOne Pages 自动部署，刷新网站查看变化。</li>
+                </ol>
+              </div>
+            </div>
+          </article>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>
